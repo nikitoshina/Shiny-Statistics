@@ -55,7 +55,8 @@ body <-  dashboardBody(
                      box( title = "Plot", width = NULL,
                 sliderInput("zConfInt", "Confidence Interval", min = 0.5, max = 1, value = 0.95, step = 0.01),
                 radioButtons("zTail","Select tails", 
-                             choices = list("Two Tail" = 0,"Left Tail" = 1,"Right Tail" = 2))
+                             choices = list("Two Tail" = 0,"Left Tail" = 1,"Right Tail" = 2),
+                             inline = T)
                 )
                 ),
               column( width = 8,
@@ -71,7 +72,8 @@ body <-  dashboardBody(
                           sliderInput("tConfInt", "Confidence Interval", min = 0.5, max = 1, value = 0.95, step = 0.01),
                           numericInput("tdf","Degrees of Freedom", min = 1, step = 1, value = 5),
                           radioButtons("tTail","Select tails", 
-                                       choices = list("Two Tail" = 0,"Left Tail" = 1,"Right Tail" = 2)))
+                                       choices = list("Two Tail" = 0,"Left Tail" = 1,"Right Tail" = 2),
+                                       inline = T))
                      ),
               column(width = 8,
                       box(titile = "Inputs", width = NULL,
