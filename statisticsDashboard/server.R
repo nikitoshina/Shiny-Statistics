@@ -1,7 +1,7 @@
 ### Generate Distribution Data
 zData <- tibble(x = rnorm(10000),
                 y = unlist(dnorm(x)))
-
+ggplot2::theme_set(ggplot2::theme_minimal())
 
 server <- function(input,output){
   
@@ -50,9 +50,8 @@ output$zDistPlot <- renderPlot({
              label = paste("<span style='color: red;'>p-value:",as.character(zpValue()),"</span><br>",
                            "<span style='color: blue;'>conf. Interval:",as.character(input$zConfInt),"</span><br>",
                            "<span style='color: forestgreen;'>z-value:",as.character(round(zqValue(),2),"</span>"))
-    )+
-    theme(legend.position = "none")})
-  
+    )+ xlab("Standard Deviation") + ylab("Probability")+
+    theme(legend.position = "none")}) 
   #### t Distribution
   tdf <- reactive({
     input$tdf
@@ -97,7 +96,7 @@ output$zDistPlot <- renderPlot({
   output$tDistPlot <- renderPlot({
     
     tData() %>% ggplot(aes(x = x, y = y))+
-      ylim(0,0.41)+ scale_x_continuous(breaks = c(-3,-2,-1,0,1,2,3),limits = c(-3,3))+
+      ylim(0,0.41)+ scale_x_continuous(breaks = c(-4,-3,-2,-1,0,1,2,3,4),limits = c(-4,4))+
       geom_line()+
       geom_area(aes(fill = tfill()))+
       # draw z distribtuion on top
@@ -117,7 +116,8 @@ output$zDistPlot <- renderPlot({
                              "<span style='color: red;'>p-value:",as.character(tpValue()),"</span><br>",
                              "<span style='color: blue;'>conf. Interval:",as.character(input$tConfInt),"</span><br>",
                              "<span style='color: forestgreen;'>t-value:",as.character(round(tqValue(),2)),"</span><br>",
-                             "<span style='color: grey;'>z-value:",as.character(round(ztqValue(),2)),"</span>"))+
+                             "<span style='color: grey;'>z-value:",as.character(round(ztqValue(),2)),"</span>")) + 
+      xlab("Standard Deviation") + ylab("Probability")+
       theme(legend.position = "none")
   })
     ##### chi^2 distribution 
@@ -150,7 +150,7 @@ output$zDistPlot <- renderPlot({
                                "<span style='color: red;'>p-value:",as.character(chipValue()),"</span><br>",
                                "<span style='color: blue;'>conf. Interval:",as.character(input$chiConfInt),"</span><br>",
                                "<span style='color: forestgreen;'>chisq:",as.character(round(chiqValue(),2),"</span>")
-                 ))+
+                 )) + xlab("X^2 Value") + ylab("Probability")+
         theme(legend.position = "none")
     })
     
@@ -183,12 +183,8 @@ output$zDistPlot <- renderPlot({
                                "<span style='color: red;'>p-value:",as.character(fpValue()),"</span><br>",
                                "<span style='color: blue;'>conf. Interval:",as.character(input$fConfInt),"</span><br>",
                                "<span style='color: forestgreen;'>f-value:",as.character(round(fqValue(),2),"</span>"))
-        ) +
-        theme(legend.position = "none")
+        )+ xlab("F Value") + ylab("Probability") +
+        theme(legend.position = "none") 
     })
-  
 }
-
-
-shinyApp(ui,server)
 
