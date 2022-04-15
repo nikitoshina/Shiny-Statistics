@@ -52,15 +52,13 @@ output$zDistPlot <- renderPlot({
                            "<span style='color: forestgreen;'>z-value:",as.character(round(zqValue(),2),"</span>"))
     )+ xlab("Standard Deviation") + ylab("Probability")+
     theme(legend.position = "none")}) 
+
   #### t Distribution
-  tdf <- reactive({
-    input$tdf
-  })
   
   tData <- reactive({
     tibble(
-      x = rt(10000, df = tdf()),
-      y = unlist(dt(x,df = tdf()))
+      x = rt(10000, df = input$tdf),
+      y = unlist(dt(x,df = input$tdf))
     )
   })
   
@@ -77,8 +75,8 @@ output$zDistPlot <- renderPlot({
   tpValue <- reactive({1 - as.numeric(input$tConfInt)})
   
   tqValue <- reactive({ifelse(tTwoTail() == T,
-                              qt(tpValue()/2, df = tdf(), lower.tail = F),
-                              qt(tpValue(), df = tdf(), lower.tail = F)) * ifelse(tTwoTail() == F & tLeftTail() == F,1,-1)
+                              qt(tpValue()/2, df = input$tdf, lower.tail = F),
+                              qt(tpValue(), df = input$tdf, lower.tail = F)) * ifelse(tTwoTail() == F & tLeftTail() == F,1,-1)
   })
   
   ztqValue <- reactive({ifelse(tTwoTail() == T,
@@ -104,15 +102,15 @@ output$zDistPlot <- renderPlot({
       geom_segment(color="grey",size=1,aes(x = ztqValue(), y = 0, xend = ztqValue(),
                                            yend = dnorm(ztqValue())))+
       geom_segment(color="forestgreen",size=1,aes(x = tqValue(), y = 0, xend = tqValue(),
-                                                  yend = dt(x = tqValue(),df = tdf())))+
+                                                  yend = dt(x = tqValue(),df = input$tdf)))+
       {if (tTwoTail()) 
         list(
           geom_segment(color="grey",size=1,aes(x = -ztqValue(), y = 0, xend = -ztqValue(),
                                                yend = dnorm(-ztqValue()))),
           geom_segment(color="forestgreen",size=1,aes(x = -tqValue(), y = 0, xend = -tqValue(),
-                                                      yend = dt(-tqValue(),df = tdf()))))}+
+                                                      yend = dt(-tqValue(),df = input$tdf))))}+
       annotate("richtext", Inf, Inf, hjust = 1, vjust = 1,
-               label = paste("<span style='color: black;'>df:",as.character(tdf()),"</span><br>",
+               label = paste("<span style='color: black;'>df:",as.character(input$tdf),"</span><br>",
                              "<span style='color: red;'>p-value:",as.character(tpValue()),"</span><br>",
                              "<span style='color: blue;'>conf. Interval:",as.character(input$tConfInt),"</span><br>",
                              "<span style='color: forestgreen;'>t-value:",as.character(round(tqValue(),2)),"</span><br>",

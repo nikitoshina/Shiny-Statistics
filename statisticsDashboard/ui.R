@@ -2,10 +2,31 @@ library(shinydashboard)
 library(shiny)
 library(tidyverse)
 library(ggtext)
+library(bslib)
+library(dashboardthemes)
+library(thematic)
 
 header <- dashboardHeader(
-  title = "Statistics Visualizations"
+  title = "Statistics Visualizations",
+  
+  dropdownMenu(
+    type = "messages",
+    messageItem (
+      icon = icon("link"),
+      from = "Nikita",
+      message = "Link to Github",
+      href = "https://github.com/nikitoshina/Shiny-Statistics/tree/main/statisticsDashboard"),
+    
+    messageItem(
+      icon = icon("link"),
+      from = "Nikita",
+      message = "Send an email",
+      href = "mailto:nikita@nikitoshina.com")
+  )
+  
 )
+
+
 
 sidebar <- dashboardSidebar(
   sidebarMenu(
@@ -22,6 +43,11 @@ sidebar <- dashboardSidebar(
   
   
 body <-  dashboardBody(
+  #  Theme 
+  shinyDashboardThemes(
+    theme = "purple_gradient"
+  ),
+  
   tabItems(
     tabItem(tabName = "zDist",
             fluidRow(
@@ -29,7 +55,8 @@ body <-  dashboardBody(
                      box( title = "Plot", width = NULL,
                 sliderInput("zConfInt", "Confidence Interval", min = 0.5, max = 1, value = 0.95, step = 0.01),
                 radioButtons("zTail","Select tails", 
-                             choices = list("Two Tail" = 0,"Left Tail" = 1,"Right Tail" = 2)))
+                             choices = list("Two Tail" = 0,"Left Tail" = 1,"Right Tail" = 2))
+                )
                 ),
               column( width = 8,
                       box(titile = "Inputs", width = NULL,
@@ -83,5 +110,5 @@ body <-  dashboardBody(
 
 
 
-ui <- dashboardPage(header,sidebar,body)          
+ui <- dashboardPage(header,sidebar,body )          
 
