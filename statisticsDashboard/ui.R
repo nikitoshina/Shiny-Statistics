@@ -100,8 +100,8 @@ body <-  dashboardBody(
                      box(title = "Input",
                          width = NULL,
                          sliderInput("fConfInt", "Confidence Interval", min = 0.5, max = 1, value = 0.95, step = 0.01),
-                         numericInput("fdf1","Degrees of Freedom", min = 1, step = 1, value = 20),
-                         numericInput("fdf2","Degrees of Freedom", min = 1, step = 1, value = 20))
+                         numericInput("fdf1","Degrees of Freedom Numerator", min = 1, step = 1, value = 20),
+                         numericInput("fdf2","Degrees of Freedom Denominator", min = 1, step = 1, value = 20))
               ),
               column( width = 8,
                       box(titile = "Inputs", width = NULL,
